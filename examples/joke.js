@@ -54,7 +54,12 @@ const actions = {
     console.log('sending...', JSON.stringify(response));
     return Promise.resolve();
   },
-  merge({entities, context, message, sessionId}) {
+  merge(params) {
+    const entities = params.entities;
+    const context = params.entities;
+    const message = params.entities;
+    const sessionId = params.entities;
+
     return new Promise(function(resolve, reject) {
       delete context.joke;
       const category = firstEntityValue(entities, 'category');
@@ -70,7 +75,9 @@ const actions = {
       return resolve(context);
     });
   },
-  ['select-joke']({entities, context}) {
+  ['select-joke'](params) {
+    const entities = params.entities;
+    const context = params.context;
     return new Promise(function(resolve, reject) {
       // const category = firstEntityValue(entities, 'category') || 'default';
       // const sentiment = firstEntityValue(entities, 'sentiment');

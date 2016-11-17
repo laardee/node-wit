@@ -102,7 +102,9 @@ const findOrCreateSession = (fbid) => {
 
 // Our bot actions
 const actions = {
-  send({sessionId}, {text}) {
+  send(session, message) {
+    const sessionId = session.sessionId;
+    const text = message.text;
     // Our bot has something to say!
     // Let's retrieve the Facebook user whose session belongs to
     const recipientId = sessions[sessionId].fbid;
@@ -139,7 +141,9 @@ const wit = new Wit({
 
 // Starting our webserver and putting it all together
 const app = express();
-app.use(({method, url}, rsp, next) => {
+app.use((req, rsp, next) => {
+  const method = req.method;
+  const url = req.url;
   rsp.on('finish', () => {
     console.log(`${rsp.statusCode} ${method} ${url}`);
   });
@@ -177,7 +181,8 @@ app.post('/webhook', (req, res) => {
           const sessionId = findOrCreateSession(sender);
 
           // We retrieve the message content
-          const {text, attachments} = event.message;
+          const text = event.message.text;
+          const attachments = event.message.attachments;
 
           if (attachments) {
             // We received an attachment
@@ -210,7 +215,7 @@ app.post('/webhook', (req, res) => {
             })
             .catch((err) => {
               console.error('Oops! Got an error from Wit: ', err.stack || err);
-            })
+            });
           }
         } else {
           console.log('received event', JSON.stringify(event));

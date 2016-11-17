@@ -21,8 +21,13 @@ const accessToken = (() => {
 
 const actions = {
   send(request, response) {
-    const {sessionId, context, entities} = request;
-    const {text, quickreplies} = response;
+    const sessionId = request.sessionId;
+    const context = request.context;
+    const entities = request.entities;
+
+    const text = response.text;
+    const quickreplies = response.quickreplies;
+
     return new Promise(function(resolve, reject) {
       console.log('user said...', request.text);
       console.log('sending...', JSON.stringify(response));
